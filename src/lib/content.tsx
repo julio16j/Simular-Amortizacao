@@ -384,23 +384,38 @@ export const informationPages = {
         </p>
         <h2>Serviços externos</h2>
         <p>
-          Esta versão não carrega anúncios, ferramentas de analytics, fontes
-          remotas ou rastreadores. Links de fontes oficiais levam a sites
-          externos, que têm suas próprias práticas de privacidade.
+          O site integra o Google AdSense para publicidade. O Google e outros
+          fornecedores de anúncios podem usar cookies e identificadores para
+          exibir e medir anúncios com base em visitas a este e a outros sites.
+          Esses serviços podem receber informações técnicas, como endereço IP,
+          navegador e páginas visitadas. O simulador não envia os valores dos
+          campos financeiros ao AdSense.
         </p>
         <p>
-          Uma hospedagem futura poderá registrar acessos técnicos, como IP e
-          data da requisição. Os detalhes do provedor, identificação do
-          responsável e canal de contato precisam ser incluídos antes da
-          publicação. A adoção de publicidade exigirá atualizar esta política e
-          configurar os mecanismos de consentimento aplicáveis.
+          Você pode gerenciar a personalização na página de{" "}
+          <a href="https://myadcenter.google.com/">preferências de anúncios do Google</a>
+          {" "}e consultar{" "}
+          <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">
+            como o Google usa dados em sites parceiros
+          </a>
+          . Para opções de outros fornecedores, consulte{" "}
+          <a href="https://optout.aboutads.info/">as preferências da Digital Advertising Alliance</a>
+          .
+        </p>
+        <p>
+          O site é hospedado no GitHub Pages. O provedor pode registrar dados
+          técnicos de acesso, como IP e data da requisição, conforme a{" "}
+          <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement">
+            política de privacidade do GitHub
+          </a>
+          . Links externos levam a serviços com suas próprias práticas de privacidade.
         </p>
         <h2>Ao sair da página</h2>
         <p>
           Fechar ou recarregar a página restaura os parâmetros padrão. Os
           arquivos CSV baixados permanecem no dispositivo até você removê-los.
         </p>
-        <p>Documento da versão local, atualizado em 02/11/2026.</p>
+        <p>Atualizado em 02/11/2026.</p>
       </>
     ),
   },
