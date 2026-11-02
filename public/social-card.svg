@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f5f8f6"/>
+  <rect width="24" height="630" fill="#087b61"/>
+  <g font-family="DejaVu Sans, Arial, sans-serif" fill="#20372e">
+    <text x="80" y="100" font-size="30" fill="#087b61">Simular Amortização</text>
+    <text x="80" y="235" font-size="64" font-weight="bold">Seu imóvel,</text>
+    <text x="80" y="315" font-size="64" font-weight="bold">quitado mais cedo.</text>
+    <text x="80" y="410" font-size="30">Compare prazo, parcelas e juros.</text>
+    <text x="80" y="465" font-size="30">Price · SAC · FGTS</text>
+    <text x="80" y="565" font-size="24" fill="#52655c">Simulação gratuita, sem cadastro</text>
+  </g>
+  <path d="M900 430V180M900 430H1110M930 370L990 300L1040 325L1100 210" fill="none" stroke="#087b61" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

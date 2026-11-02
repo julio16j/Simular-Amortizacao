@@ -357,9 +357,25 @@ export const informationPages = {
         </p>
         <p>
           Veja a <Link href="/metodologia/">metodologia e as fontes</Link> para
-          conhecer os critérios e limitações. A versão local está em validação;
-          a identificação do responsável e o canal de contato serão preenchidos
-          antes da publicação.
+          conhecer os critérios e limitações. Os guias explicam as premissas
+          usadas pelo simulador e indicam as fontes para conferência.
+        </p>
+        <h2>Responsável e contato</h2>
+        <p>
+          O responsável pelo site e autor dos guias é Julio Cesar Urbano. Para
+          dúvidas, sugestões ou relatos de erros, entre em contato pelo{" "}
+          <a href="mailto:jc.urbano.vasconcelos@gmail.com">
+            jc.urbano.vasconcelos@gmail.com
+          </a>{" "}
+          ou pelo telefone <a href="tel:+5583996216059">(83) 99621-6059</a>.
+        </p>
+        <h2>Critérios do conteúdo</h2>
+        <p>
+          Os guias apresentam explicações educativas, exemplos e limitações dos
+          cálculos. As fontes oficiais estão indicadas na metodologia e nos
+          textos sobre FGTS. A data de atualização identifica a versão do
+          conteúdo; não representa uma validação pelo banco ou revisão por
+          consultor financeiro.
         </p>
       </>
     ),
@@ -393,13 +409,17 @@ export const informationPages = {
         </p>
         <p>
           Você pode gerenciar a personalização na página de{" "}
-          <a href="https://myadcenter.google.com/">preferências de anúncios do Google</a>
-          {" "}e consultar{" "}
+          <a href="https://myadcenter.google.com/">
+            preferências de anúncios do Google
+          </a>{" "}
+          e consultar{" "}
           <a href="https://policies.google.com/technologies/partner-sites?hl=pt-BR">
             como o Google usa dados em sites parceiros
           </a>
           . Para opções de outros fornecedores, consulte{" "}
-          <a href="https://optout.aboutads.info/">as preferências da Digital Advertising Alliance</a>
+          <a href="https://optout.aboutads.info/">
+            as preferências da Digital Advertising Alliance
+          </a>
           .
         </p>
         <p>
@@ -408,7 +428,8 @@ export const informationPages = {
           <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement">
             política de privacidade do GitHub
           </a>
-          . Links externos levam a serviços com suas próprias práticas de privacidade.
+          . Links externos levam a serviços com suas próprias práticas de
+          privacidade.
         </p>
         <h2>Ao sair da página</h2>
         <p>

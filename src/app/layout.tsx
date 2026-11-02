@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { ChartNoAxesCombined } from "lucide-react";
 import "./globals.css";
+import StructuredData from "../components/StructuredData";
+import { author, socialImage } from "../lib/seo";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 export const metadata: Metadata = {
@@ -14,13 +16,23 @@ export const metadata: Metadata = {
   description:
     "Simule amortizações do financiamento imobiliário com Price, SAC e FGTS. Compare redução de prazo ou parcela, juros e previsão de quitação. Grátis, sem cadastro.",
   robots: { index: true, follow: true },
+  authors: [{ name: author.name }],
   openGraph: {
     type: "website",
     locale: "pt_BR",
     siteName: "Simular Amortização",
-    title: "Seu imóvel, quitado mais cedo",
+    title: "Simulador de amortização imobiliária Price e SAC",
     description:
       "Descubra quanto tempo e juros você pode economizar com amortizações e FGTS.",
+    images: [socialImage],
+    ...(siteUrl ? { url: `${siteUrl.replace(/\/$/, "")}/` } : {}),
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Simulador de amortização imobiliária Price e SAC",
+    description:
+      "Compare amortizações, prazo, parcelas e juros com Price, SAC e FGTS.",
+    images: [socialImage.url],
   },
   ...(siteUrl ? { alternates: { canonical: "/" } } : {}),
 };
@@ -37,6 +49,18 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {siteUrl && (
+          <StructuredData
+            data={{
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Simular Amortização",
+              url: `${siteUrl.replace(/\/$/, "")}/`,
+              inLanguage: "pt-BR",
+              publisher: author,
+            }}
+          />
+        )}
         <a className="skip-link" href="#conteudo">
           Ir para o conteúdo
         </a>

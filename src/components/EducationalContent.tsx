@@ -112,9 +112,11 @@ export default function EducationalContent() {
           </summary>
           <p>
             Não. A simulação acontece no navegador, sem login, CPF ou envio dos
-            valores financeiros. Você pode baixar o resultado em CSV. Nesta
-            versão, não há anúncios, analytics ou salvamento automático das
-            simulações.
+            valores financeiros pelo simulador. Você pode baixar o resultado em
+            CSV, sem salvamento automático das simulações. O site integra o
+            Google AdSense para publicidade; consulte a{" "}
+            <Link href="/privacidade/">política de privacidade</Link> para
+            conhecer o tratamento de dados por serviços externos.
           </p>
         </details>
       </div>

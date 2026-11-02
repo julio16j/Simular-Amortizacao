@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { informationPages } from "../../lib/content";
+import { pageMetadata } from "../../lib/seo";
 type Key = keyof typeof informationPages;
 export function generateStaticParams() {
   return Object.keys(informationPages).map((page) => ({ page }));
@@ -13,13 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { page } = await params,
     content = informationPages[page];
-  return {
-    title: content.title,
-    description: content.description,
-    alternates: process.env.NEXT_PUBLIC_SITE_URL
-      ? { canonical: `/${page}/` }
-      : undefined,
-  };
+  return pageMetadata(content.title, content.description, `/${page}/`);
 }
 export default async function InformationPage({
   params,
