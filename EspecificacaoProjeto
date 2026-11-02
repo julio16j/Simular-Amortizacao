@@ -1,0 +1,544 @@
+﻿# ESPECIFICAÇÃO — SIMULADOR DE AMORTIZAÇÃO IMOBILIÁRIA
+
+## Objetivo e decisões do projeto
+
+Atualizado em 02/11/2026. Este documento contém o escopo vigente do site Simula Amortização.
+
+### Primeira versão em implementação
+
+- Desenvolver e executar localmente, sem publicação e sem AdSense nesta entrega. A configuração de anúncios será feita depois, em uma etapa própria.
+- Não carregar scripts de publicidade, rastreamento ou banners de anúncios vazios nesta versão.
+- Padrões de teste atualizados: saldo devedor de R$ 261.000; juros efetivos de 7,9347% ao ano; prestação informada de R$ 1.864,86 usada como referência; TR anual de 1,5%; Price; prazo original de 420 meses, com 2 parcelas pagas e 418 restantes; amortização extra mensal de R$ 650 para reduzir prazo.
+- Habilitar FGTS e saque-aniversário para amortizar a dívida. Para dados do fundo não informados na atualização, usar hipóteses editáveis do exemplo: saldo de R$ 3.000, depósito de R$ 720/mês, rendimento total estimado de 6,5% ao ano e aniversário em setembro. Uso direto periódico inicia desabilitado, como opção separada. Seguro e tarifa permanecem zero nos padrões de teste até serem informados; o exemplo Caixa preserva seus próprios encargos.
+- Manter detalhes do FGTS recolhidos, com resumo visível da estratégia, saldo e depósitos. O formulário deve continuar simples para testar com os valores iniciais.
+- O botão de simulação calcula os valores preenchidos; após a primeira execução, alterações válidas atualizam a projeção. O botão de exemplo mantém os dados Caixa separados dos padrões de teste.
+- Implementar estilos próprios e gráfico SVG acessível, sem biblioteca de dashboard. Usar Decimal.js para precisão e Web Worker para executar a projeção sem bloquear a interface.
+- Documentar metodologia, fontes, limites e verificações em README.md e docs/METODOLOGIA.md.
+- A validação da primeira versão está registrada em docs/VERIFICACOES.md: testes financeiros, fluxos no navegador, acessibilidade automatizada e limitações da cobertura. Não declarar desempenho ou compatibilidade com dispositivos que não foram efetivamente medidos.
+
+### Processo de documentação
+
+- Registrar neste arquivo todas as decisões de produto, arquitetura e escopo acordadas na conversa.
+- Quando o assunto exigir um documento próprio, criar um arquivo de texto ou Markdown e referenciá-lo nesta especificação.
+- Manter os documentos atualizados quando uma decisão mudar, indicando claramente o escopo vigente.
+- Não considerar uma sugestão ainda em discussão como decisão aprovada.
+
+### Objetivo e arquitetura
+
+- Criar um site público simples, claro e útil para simular amortizações imobiliárias, com monetização por publicidade do Google AdSense.
+- Aplicação 100% frontend: todos os cálculos e projeções são executados no navegador, sem backend, autenticação, banco de dados ou APIs obrigatórias para o simulador funcionar.
+- Usar Next.js com exportação estática e TypeScript strict. A geração de HTML acontece durante o build, sem processamento no servidor por visita.
+- Entregar conteúdo educativo e metadados no HTML gerado, com JavaScript para a interação do simulador.
+- Manter o motor financeiro separado da interface, com precisão monetária explícita e testes automatizados. Simplificar a interface não autoriza simplificar silenciosamente as regras financeiras.
+- Adotar dependências somente quando houver necessidade concreta. Usar Vitest para os testes financeiros; escolher ferramentas de formulário, gráficos e estilos conforme a implementação exigir.
+- Os dados financeiros preenchidos não devem ser enviados para serviços externos. Publicidade é uma integração externa opcional e não pode ser necessária para calcular.
+
+### Ordem e clareza da página
+
+1. Cabeçalho compacto, título objetivo e uma descrição curta.
+2. Simulador: dados essenciais do financiamento e configuração das amortizações, com opções avançadas recolhidas.
+3. Previsão e resultados: data estimada de quitação, tempo economizado, economia de juros e comparação com o cenário sem amortização extraordinária; gráfico e evolução mensal em seguida.
+4. Conteúdo explicativo abaixo da ferramenta e dos resultados: conceitos, exemplos, metodologia, premissas, fontes e perguntas frequentes.
+5. Rodapé com navegação e informações institucionais e de privacidade.
+
+- O cálculo e a previsão são a prioridade no início da página. Não inserir artigos longos, banners grandes ou publicidade antes da ferramenta.
+- O painel principal verde deve destacar em quantos anos e meses o usuário quitaria a dívida com a estratégia selecionada, com a data estimada logo abaixo. O tempo economizado permanece como informação complementar no painel. A economia de juros fica em um dos cards brancos, junto ao prazo sem extras e ao total de amortizações; não é o destaque principal. Em projeções sem quitação, mostrar a limitação sem inventar prazo.
+- Em telas largas, formulário e resumo dos resultados podem aparecer lado a lado. No celular, manter a sequência lógica de preenchimento e resultados sem exigir várias telas.
+- Antes da primeira simulação, mostrar um estado vazio orientativo; não apresentar resultados inventados como previsão do usuário.
+- Usar linguagem simples, unidades explícitas, moeda em reais e datas brasileiras. Explicar termos técnicos perto dos campos quando necessário.
+- Mostrar junto aos resultados um aviso curto de estimativa e as limitações que afetem aquela simulação; deixar a metodologia detalhada abaixo.
+
+### SEO e conteúdo
+
+- Criar HTML semântico, um título principal claro por página, títulos e descrições específicos, URLs legíveis, links internos rastreáveis, canonical, sitemap e robots adequados à hospedagem estática.
+- Publicar explicações originais e úteis sobre amortização, Price, SAC, redução de prazo versus prestação e uso do FGTS, com fontes oficiais e data de revisão quando aplicável.
+- Páginas educativas próprias podem complementar a explicação abaixo do simulador, desde que tenham conteúdo relevante e não sejam duplicações criadas apenas para palavras-chave.
+- Documentar metodologia, premissas e limitações dos cálculos, com identificação do responsável pelo conteúdo e forma de contato na publicação.
+- Usar dados estruturados somente quando corresponderem ao conteúdo real e às diretrizes aplicáveis; não prometer posições na busca ou resultados enriquecidos.
+- Incluir páginas de sobre, contato, privacidade e termos/aviso de uso antes da publicação monetizada. Não inventar dados do responsável.
+
+### Responsividade, acessibilidade e desempenho
+
+- Funcionar confortavelmente em celulares, tablets e computadores, em orientação vertical e horizontal, sem depender de mouse ou de hover.
+- Testar larguras representativas de 320, 375, 768, 1024 e 1440 pixels, além de zoom de 200%, navegação por teclado e toque.
+- Evitar rolagem horizontal na página. Tabelas extensas podem ter rolagem horizontal dentro de uma região identificada e acessível; oferecer resumo legível em telas pequenas.
+- Garantir rótulos de campos, mensagens de erro compreensíveis, foco visível, contraste adequado e controles com áreas de toque confortáveis.
+- Os resultados essenciais devem estar disponíveis em texto; gráficos não podem ser a única forma de entender a simulação.
+- Validar em versões atuais de Chrome, Safari, Firefox e Edge, incluindo Safari no iOS e Chrome no Android quando houver ambiente disponível; documentar lacunas de verificação.
+- Carregar gráficos e exportações sob demanda quando possível, evitar JavaScript desnecessário e limitar a renderização simultânea de linhas sem truncar a projeção calculada.
+- Evitar travamentos durante simulações longas; medir o custo dos cálculos e usar execução em segundo plano no navegador se necessário.
+- Reservar dimensões dos anúncios e gráficos para evitar saltos de layout. A falha ou o bloqueio de anúncios não pode impedir o uso da ferramenta.
+- Almejar os limites bons dos Core Web Vitals: LCP até 2,5 s, INP até 200 ms e CLS até 0,1. Medições de laboratório são verificações iniciais; confirmar dados reais após publicação, sem declarar aprovação sem medição.
+
+### Publicidade nesta entrega
+
+- A primeira versão não inclui AdSense, scripts publicitários nem espaços vazios para anúncios.
+- Configuração de monetização fica para uma etapa posterior solicitada pelo responsável.
+### Funcionalidades principais
+
+- Preservar Price, SAC, TR configurável, amortizações próprias e estratégia de FGTS, comparação antes/depois, previsão até a quitação, memória mensal e testes financeiros.
+- Usar um único campo de amortização extra mensal, preenchido com R$ 650. Permitir reduzir prazo ou prestação. Aplicar desde a próxima parcela; valor zero desativa os extras. Não exibir lista, botão de adicionar ou diferentes frequências de amortizações próprias.
+- Começar com um gráfico principal de saldo devedor e exportação CSV.
+- Detalhes adicionais do escopo podem ser ajustados nas próximas decisões e devem ser registrados neste documento.
+
+## Configuração do financiamento
+
+Crie um formulário com os seguintes campos.
+
+### Dados básicos
+
+- Valor original do imóvel.
+- Valor originalmente financiado.
+- Valor da entrada (opcional).
+- Saldo devedor atual.
+- Prazo original em meses.
+- Número de parcelas já pagas.
+- Número de parcelas restantes.
+- Data da próxima prestação.
+- Tipo de amortização: Price ou SAC.
+- Taxa de juros contratual.
+- Tipo de taxa: nominal ou efetiva.
+- Periodicidade da taxa: mensal ou anual.
+- Indexador: sem correção ou TR.
+- TR anual estimada, configurável.
+- Valor atual da prestação, caso conhecido.
+- Valor atual do seguro mensal.
+- Taxas administrativas mensais.
+- Possibilidade de variação dos encargos ao longo do tempo.
+
+Permita dois modos:
+
+**Modo contrato novo:** calcula toda a operação desde a primeira parcela.
+
+**Modo financiamento em andamento:** usa o saldo devedor atual como ponto de partida e as parcelas restantes.
+
+O sistema não deve tentar reconstruir o saldo atual exclusivamente pelo valor originalmente financiado. Para financiamentos em andamento, o saldo informado pelo usuário prevalece.
+
+Se houver divergência entre a prestação informada e a prestação teórica calculada, apresente um aviso e permita escolher qual valor utilizar como referência, explicando as consequências.
+
+Não force a prestação informada a corresponder exatamente à fórmula teórica.
+
+## Cálculo dos sistemas Price e SAC
+
+Implemente um motor de cálculo financeiro com precisão adequada para valores monetários. Utilize biblioteca decimal apropriada ou estratégia explícita de precisão e arredondamento. Evite acumular erros de ponto flutuante.
+
+### Tabela Price
+
+A prestação financeira teórica, sem encargos adicionais, deve ser calculada por:
+
+PMT = PV × [i × (1+i)^n] / [(1+i)^n − 1]
+
+Onde:
+
+- PMT: prestação financeira.
+- PV: saldo devedor.
+- i: taxa de juros mensal.
+- n: número de parcelas restantes.
+
+Para juros nominais anuais com capitalização mensal, use a conversão conforme o contrato, normalmente a taxa nominal dividida por 12.
+
+Para juros efetivos anuais, converta por:
+
+i = (1 + taxa_anual)^(1/12) − 1
+
+Não confunda taxa nominal com efetiva.
+
+Em cada mês, calcule:
+
+1. Saldo devedor inicial.
+2. Correção monetária pela TR, quando aplicável.
+3. Juros sobre o saldo corrigido.
+4. Amortização ordinária do principal.
+5. Seguro e encargos adicionais.
+6. Prestação total.
+7. Amortizações extraordinárias com recursos próprios.
+8. Amortizações provenientes do FGTS.
+9. Saldo final.
+
+A prestação financeira e os encargos devem aparecer separadamente.
+
+A fórmula e o processo de reajuste contratual devem ser configuráveis. Não presuma que todos os contratos Caixa com TR reajustam as prestações exatamente da mesma forma.
+
+### Sistema SAC
+
+No SAC, a amortização ordinária inicial deve ser calculada dividindo o principal pelo prazo correspondente, respeitando os recálculos contratuais após amortizações extraordinárias.
+
+Os juros incidem sobre o saldo devedor aplicável em cada período.
+
+O valor da prestação financeira normalmente diminui ao longo do tempo em um cenário sem alterações de indexador.
+
+A implementação deve tratar corretamente amortizações extraordinárias com redução de prazo ou prestação.
+
+## Amortização extraordinária
+
+Permita que o usuário escolha como deseja amortizar.
+
+### Redução de prazo
+
+O usuário informa um valor extraordinário e o sistema reduz o saldo devedor, mantendo como referência a prestação financeira aplicável e recalculando o prazo necessário para a quitação.
+
+Mostre:
+
+- Quantas parcelas foram eliminadas.
+- Nova data estimada de quitação.
+- Quanto tempo foi economizado.
+- Juros futuros evitados.
+- Novo saldo devedor.
+- Diferença em relação ao cenário sem amortização.
+
+### Redução de prestação
+
+O usuário informa um valor extraordinário e o sistema reduz o saldo devedor, preservando o prazo restante e recalculando a prestação financeira.
+
+Mostre:
+
+- Nova prestação.
+- Redução mensal.
+- Economia de juros.
+- Prazo restante.
+- Diferença em relação ao cenário sem amortização.
+
+### Amortização mensal simplificada
+
+- Solicitar somente um valor mensal de amortização própria, com padrão de R$ 650.
+- Aplicar o valor a cada prestação, a partir da próxima data informada, até a quitação.
+- Permitir escolher redução de prazo ou de prestação; padrão: reduzir prazo.
+- Valor zero permite comparar sem amortizações próprias.
+- Limitar a aplicação ao saldo de principal disponível e registrar excedentes não utilizados.
+- A estratégia mensal pode ser combinada com o FGTS configurado.
+## Simulador de FGTS
+
+Esta será uma das funcionalidades mais importantes do projeto.
+
+Crie uma seção específica intitulada **Estratégia de Amortização com FGTS**.
+
+Campos necessários:
+
+- Saldo atual do FGTS.
+- Valor dos depósitos mensais.
+- Taxa anual estimada de rendimento total do FGTS.
+- Mês e ano iniciais da projeção.
+- Modalidade de saque: saque-rescisão ou saque-aniversário.
+- Mês do aniversário do trabalhador.
+- Percentual ou valor opcional de depósitos futuros.
+- Data prevista da primeira utilização do FGTS no financiamento.
+- Periodicidade pretendida de utilização.
+- Possibilidade de habilitar ou desabilitar o uso do FGTS.
+
+### Acumulação mensal
+
+Projete o saldo da conta do FGTS usando:
+
+- Saldo inicial.
+- Depósitos mensais.
+- Rendimento estimado.
+- Saques realizados.
+- Utilizações para amortizar o financiamento.
+
+O rendimento deve ser definido como taxa anual total e convertido para taxa mensal equivalente.
+
+Não some a TR novamente ao rendimento total do FGTS se ela já estiver incluída na taxa fornecida.
+
+Informe que a rentabilidade futura é estimada e que a distribuição de resultados do FGTS não é garantida.
+
+### Saque-aniversário
+
+Implemente a tabela oficial de alíquotas e parcelas adicionais:
+
+| Saldo do FGTS | Alíquota | Parcela adicional |
+|---|---|---|
+| Até R$ 500 | 50% | R$ 0 |
+| R$ 500,01 a R$ 1.000 | 40% | R$ 50 |
+| R$ 1.000,01 a R$ 5.000 | 30% | R$ 150 |
+| R$ 5.000,01 a R$ 10.000 | 20% | R$ 650 |
+| R$ 10.000,01 a R$ 15.000 | 15% | R$ 1.150 |
+| R$ 15.000,01 a R$ 20.000 | 10% | R$ 1.900 |
+| Acima de R$ 20.000 | 5% | R$ 2.900 |
+
+O valor do saque-aniversário será calculado de acordo com o saldo disponível no momento do saque, respeitando as regras aplicáveis.
+
+Permita escolher o destino do saque-aniversário:
+
+1. Amortizar o financiamento imediatamente.
+2. Guardar o dinheiro sem amortizar.
+3. Não considerar o saque na estratégia.
+
+O saque-aniversário reduz efetivamente o saldo do FGTS.
+
+**Nunca contabilize os mesmos recursos duas vezes.**
+
+### Uso periódico do FGTS
+
+Permita configurar utilização do FGTS a cada 24 meses ou outro intervalo permitido pelas regras aplicáveis.
+
+A opção padrão deve refletir as regras usuais de utilização para amortização, mas não deve autorizar automaticamente qualquer intervalo informado.
+
+O simulador deve distinguir:
+
+- Intervalo de utilização pretendido.
+- Intervalo mínimo permitido.
+- Disponibilidade real de saldo.
+- Elegibilidade do trabalhador.
+- Restrições de movimentação existentes.
+
+Inclua avisos sobre requisitos como enquadramento nas regras habitacionais, restrições de saldo e eventual antecipação do saque-aniversário que bloqueie recursos.
+
+O FGTS só pode ser descontado uma vez: ao ser utilizado no financiamento, deve diminuir tanto o saldo do fundo quanto a dívida imobiliária.
+
+### Ordem das operações
+
+Defina uma ordem mensal explícita, documentada e testável.
+
+A configuração deve permitir reproduzir o calendário de uma operação real.
+
+Quando houver saque-aniversário e amortização direta de FGTS no mesmo período, o sistema precisa calcular corretamente o saldo disponível após cada operação.
+
+## Projeção da TR
+
+A aplicação não deve presumir que a TR será zero durante todo o financiamento.
+
+Crie três cenários editáveis:
+
+| Cenário | TR estimada anual |
+|---|---|
+| Otimista | 0,5% |
+| Base | 1,5% |
+| Conservador | 2,5% |
+
+Essas taxas devem ser apresentadas como premissas ilustrativas, não como previsões oficiais.
+
+Converta a taxa anual em fator mensal composto.
+
+Permita também:
+
+- TR de 0%.
+- TR fixa personalizada.
+- Taxas diferentes para cada ano da projeção.
+
+Não misture juros contratuais com correção pela TR. Mostre as duas parcelas do custo separadamente.
+
+## Simulação mês a mês
+
+Este é um requisito essencial.
+
+A aplicação deve produzir uma tabela completa até a quitação, mesmo que o prazo ultrapasse dez anos.
+
+Cada linha precisa conter:
+
+- Número do mês.
+- Competência e data.
+- Saldo inicial.
+- Correção pela TR.
+- Saldo corrigido.
+- Juros do mês.
+- Amortização ordinária.
+- Prestação financeira.
+- Seguro.
+- Taxas administrativas.
+- Prestação total.
+- Amortização extraordinária mensal.
+- Excedente de amortização mensal não utilizado.
+- Saque-aniversário usado.
+- FGTS aplicado diretamente.
+- Amortização total.
+- Saldo final.
+- Saldo acumulado do FGTS.
+- Total de juros pagos acumulados.
+- Total de correção monetária acumulada.
+- Total pago acumulado.
+
+A tabela deve permitir expandir os detalhes de cada mês.
+
+Crie filtros por ano e exportação em CSV.
+
+Apresente também um resumo anual com os mesmos indicadores principais.
+O resumo anual completo deve aparecer primeiro, aberto por padrão e com todos os anos da projeção. Abaixo dele, exibir o botão "Ver mês a mês", que abre ou recolhe a evolução mensal com filtro por ano, paginação e memória de cálculo. A exportação CSV completa deve continuar disponível mesmo com a tabela mensal recolhida.
+
+## Indicadores e resultados
+
+Após executar a simulação, exiba cards com:
+
+- Saldo devedor atual.
+- Data de quitação sem amortização extra.
+- Data projetada de quitação com amortizações.
+- Quantidade de meses economizados.
+- Economia de juros projetada.
+- Total de amortizações extraordinárias.
+- Total amortizado com FGTS.
+- Total de recursos próprios utilizados.
+- Total pago em prestações.
+- Total pago em seguros e taxas.
+- Total de correção monetária.
+- Custo total projetado até a quitação.
+- Razão entre custo total e valor originalmente financiado.
+
+A economia deve ser calculada comparando dois cenários produzidos pelo mesmo motor financeiro: um cenário-base e outro com a estratégia escolhida.
+
+Não calcule a economia apenas multiplicando o valor da parcela pelos meses reduzidos.
+
+Separe também:
+
+- Principal devolvido.
+- Juros pagos.
+- Correção monetária.
+- Seguros.
+- Taxas.
+- Amortizações extraordinárias.
+
+O total de recursos próprios e o valor do FGTS devem ser apresentados separadamente, mas ambos entram no custo total pago para quitar a dívida.
+
+## Exemplo inicial preenchido
+
+Inclua uma demonstração com os dados abaixo, baseada em um financiamento real.
+
+**Financiamento:**
+
+- Instituição: Caixa Econômica Federal.
+- Sistema: Price.
+- Valor de compra do imóvel: R$ 280.000.
+- Avaliação bancária: R$ 350.000.
+- Valor originalmente financiado: R$ 260.000.
+- Saldo devedor informado: R$ 261.261,04.
+- Prazo original: 420 meses.
+- Parcelas já pagas: 2.
+- Taxa nominal anual: 7,66%.
+- Taxa efetiva anual informada: 7,9347%.
+- Indexador: TR.
+- TR anual estimada: 1,5%.
+- Próximo vencimento: 25/11/2026.
+- Prestação atual: R$ 1.864,88.
+- Seguro: R$ 47,20.
+- Taxa administrativa: R$ 25,00.
+- Seguro e taxa já incluídos na prestação informada.
+
+**Amortizações com recursos próprios:**
+
+- Amortização mensal extraordinária: R$ 650.
+- Modalidade: reduzir prazo.
+- Início: novembro de 2026.
+
+**FGTS:**
+
+- Saldo inicial: R$ 3.000.
+- Depósito mensal: R$ 720.
+- Rentabilidade anual total estimada: 6,5%.
+- Modalidade: saque-aniversário.
+- Mês do aniversário: setembro.
+- Uso integral do valor líquido disponível do saque-aniversário para amortizar o financiamento em setembro.
+- Utilização adicional do saldo livre do FGTS a cada 24 meses, começando em outubro de 2028.
+- Modalidade das amortizações do FGTS: reduzir prazo.
+
+**Horizonte:**
+
+- Projeção mensal completa até a quitação, com paginação da tabela e exportação integral em CSV.
+- Continuação automática até a quitação.
+- Comparação com cenário sem amortizações extraordinárias.
+
+Esses dados devem ser carregados através de um botão **"Carregar exemplo"**. Não devem ser valores fixos no código do simulador.
+
+A data efetiva de saque, elegibilidade e disponibilidade do FGTS precisam ser validadas como premissas; o sistema não deve apresentar a estratégia como uma autorização da Caixa.
+
+## Requisitos técnicos do motor financeiro
+
+O núcleo financeiro deve:
+
+- Ser determinístico.
+- Usar funções puras sempre que possível.
+- Separar configuração, eventos mensais e resultados.
+- Evitar dependência de estado global.
+- Suportar diferentes calendários de amortização.
+- Identificar automaticamente a quitação.
+- Interromper a cobrança de juros e parcelas após a quitação.
+- Impedir saldos devedores negativos.
+- Impedir uso duplicado de FGTS.
+- Tratar corretamente mudanças de prazo.
+- Tratar corretamente mudanças de prestação.
+- Distinguir taxa nominal e efetiva.
+- Registrar diferenças de arredondamento.
+- Expor memória de cálculo.
+- Suportar projeções longas, inclusive até 420 meses ou mais.
+
+Defina interfaces TypeScript explícitas para financiamento, FGTS, eventos, pagamentos e resultados.
+
+O motor deve permitir recalcular todas as saídas quando qualquer parâmetro for alterado.
+
+## Testes automatizados
+
+Implemente testes unitários cobrindo pelo menos:
+
+1. Price sem TR e sem extras.
+2. SAC sem TR e sem extras.
+3. Conversão de taxas nominais e efetivas, mensais e anuais.
+4. Correção pela TR e taxas específicas por ano.
+5. Amortização mensal com redução de prazo.
+6. Amortização mensal com redução de prestação.
+7. Saldo atual em contrato em andamento e principal de contrato novo.
+8. Prestação informada com encargos separados.
+9. FGTS com saldo inicial, depósitos e rendimento mensal.
+10. Faixas do saque-aniversário e limites de cada faixa.
+11. Saque-aniversário seguido de FGTS direto e ordem inversa.
+12. FGTS insuficiente, saldo bloqueado e elegibilidade não confirmada.
+13. Bloqueio antes do intervalo mínimo, considerando última utilização anterior.
+14. Quitação antecipada e limite das amortizações ao saldo devido.
+15. Última prestação e resíduos de arredondamento.
+16. Comparação entre cenários e ausência de economia fictícia em projeção incompleta.
+17. Conservação financeira e ausência de uso duplicado de recursos.
+18. Projeções superiores a dez anos, vencimentos em meses curtos e determinismo.
+Crie testes de consistência verificando que, a cada mês, o saldo final seja reconciliável com o saldo inicial, a correção, os juros apropriados e todas as amortizações.
+
+Não utilize resultados de simulações anteriores como valores esperados sem validá-los independentemente.
+
+## Precisão e transparência
+
+A aplicação deve deixar explícito que os valores são estimativas.
+
+Inclua um aviso:
+
+"Esta ferramenta realiza projeções financeiras para fins educacionais e de planejamento. Os resultados podem divergir dos cálculos oficiais da instituição financeira em razão de indexadores, datas de atualização, seguros, regras contratuais e condições de utilização do FGTS."
+
+Também apresente:
+
+- Taxas utilizadas.
+- Critério de conversão das taxas.
+- Ordem dos eventos mensais.
+- Critério de arredondamento.
+- Fonte e data das tabelas regulamentares.
+- Premissas editáveis.
+- Eventos não modelados.
+
+## Gráfico e exportação
+
+- Exibir um gráfico principal de evolução do saldo devedor, comparando o cenário sem amortizações extraordinárias com a estratégia configurada.
+- Mostrar essa comparação também em texto e indicadores, com datas e valores brasileiros.
+- Exportar a evolução mensal completa em CSV, com os campos da memória de cálculo, cabeçalhos claros e compatibilidade com planilhas.
+- Permitir filtrar a tabela por ano sem limitar o horizonte calculado.
+
+## Organização e execução
+
+- Organizar o código de forma enxuta, separando páginas e conteúdo estático, componentes de interface, motor financeiro, exportação CSV, dados do exemplo e testes.
+- Definir tipos explícitos e validação dos dados de entrada, sem depender de componentes React para calcular.
+- Implementar e testar o motor financeiro antes de conectar a interface.
+- Construir a interface responsiva e integrar comparação, gráfico, tabela mensal e exportação CSV.
+- Gerar o site estático com conteúdo educativo indexável e espaços de anúncios preparados.
+- Executar lint, verificação de tipos, testes e build; corrigir os problemas encontrados.
+- Documentar no README como instalar, executar, testar e gerar os arquivos estáticos para hospedagem.
+- Não apresentar telas estáticas ou dados fictícios como resultados calculados.
+- Quando uma regra contratual ou regulatória não puder ser reproduzida com segurança, documentar a limitação, oferecer uma hipótese configurável e sinalizar a estimativa.
+
+## Critérios de conclusão
+
+- Configurar e simular Price e SAC, usando o saldo informado para contratos em andamento.
+- Combinar amortizações próprias e estratégias de FGTS, respeitando saldo, intervalos e restrições configurados.
+- Comparar a estratégia com um cenário sem amortizações extraordinárias produzido pelo mesmo motor.
+- Exibir previsão de quitação, economia de juros, custo total e evolução mensal completa até a quitação.
+- Disponibilizar gráfico principal, resumo anual, tabela com detalhes e exportação CSV.
+- Manter ferramenta e previsão antes do conteúdo explicativo.
+- Entregar páginas estáticas com conteúdo claro, metadados, navegação e arquivos de indexação.
+- Verificar uso em diferentes tamanhos de tela, acessibilidade e desempenho, documentando limitações dos testes disponíveis.
+- Manter o simulador funcional sem anúncios, backend ou serviços externos.
+- Passar nos testes financeiros e nas verificações de lint, tipos e build.
+- Antes da publicação monetizada, preencher domínio, identificação, contato, dados de publicidade e configurações de privacidade reais.
+
+
+
+

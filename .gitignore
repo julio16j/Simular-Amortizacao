@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+.npm-cache/
+*.tsbuildinfo
+test-results/
+playwright-report/
+.env*.local
+dev-server*.log
