@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Simule amortizações do financiamento imobiliário com Price, SAC e FGTS. Compare redução de prazo ou parcela, juros e previsão de quitação. Grátis, sem cadastro.",
   robots: { index: true, follow: true },
   verification: {
-    google: "ItHqVValszud0ls4PXH2_wDkKm_8xtaw-QrutMKntIo",
+    google: "uBEIJW2KYQttod65EVXozyMP7omfvNlWHeFFhbn-MjU",
   },
   authors: [{ name: author.name }],
   openGraph: {
